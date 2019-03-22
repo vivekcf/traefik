@@ -4,7 +4,7 @@
       -v $PWD/acme.json:/acme.json \
       -p 80:80 \
       -p 443:443 \
-      -l traefik.frontend.rule=Host:traefik.XXX.yyy \
+      -l traefik.frontend.rule=Host:traefik.domain1.com \
       -l traefik.port=8080 \
       --network web \
       --name traefik \
