@@ -19,7 +19,7 @@ defaultEntryPoints = ["http", "https"]
 entrypoint="dashboard"
 
 [acme]
-email = "XXXXxxx@yyyYYY.zzzz"
+email = "email.domain1.com"
 storage = "acme.json"
 entryPoint = "https"
 onHostRule = true
