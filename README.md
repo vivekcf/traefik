@@ -9,6 +9,7 @@ Traefik configuration for multiple domians with redirection
 5. Ensure that no other servers (nginx, apache etc) are using these ports on the server 
 
 ## Folder Structure
+```
   /home/user/
        |
        --/traefik/
@@ -27,6 +28,7 @@ Traefik configuration for multiple domians with redirection
        |   --/domain1/wordpress_files/
        |   --/domain1/datadir/    
        |...
+```
 
 ## Install apache2-utils
 This is used to create the http access password
@@ -87,10 +89,34 @@ Scroll up to see the randomly generated password in the logs.
 Or you may supply your own password by setting  `MYSQL_ROOT_PASSWORD: PPPPPPPPPP` in the docker-compose.yml file
 ## Create the Docker Container
 `docker-compose up -d`
-If the container generation fails for any reason, you should empty out the /domain1/wordpress and /domain1/datadir by using `sudo rm -R /domain1/wordpress_files`  etc
-Alternatively, comment out the `  MYSQL_RANDOM_ROOT_PASSWORD: '1'` line before running docker-compopse again.
+It will bring up three containers and create a domain1_internal network in docker
+```
+docker ps -a
+docker network ls
+```
+## Visit your domains and verify the SSL
+SSL may not have been generated the first time you visit your domain but often it would be available the second time.
+Set up your wordpress site.
+https://www.domain1.com
 
+### Check the redirection 
+http://www.domain1.com
+http://domain1.com
+https://domain1.com
 
+### Check the certificates store
+
+```cd ../traefic
+cat acme.json
+```
+## Repeat the Process for domain 2
+
+## Troublehsooting
+If the container generation fails for any reason, you should 
+1. empty out 
+ - /domain1/wordpress  `sudo rm -R /domain1/wordpress_files`  
+ -  /domain1/datadir 
+2. Alternatively, comment out the `  MYSQL_RANDOM_ROOT_PASSWORD: '1'` line before running docker-compose again. This means now docker will reuse the previouly generated ROOT password. You better have it noted somehwere safe then (contaner log has it) !
 
 
 
