@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+  blogDomain2:
+    image: wordpress:5.1.1-apache
+    depends_on:
+      - dbdomain2
+    environment:
+      WORDPRESS_DB_HOST: dbDomain2
+      WORDPRESS_DB_USER: SSSSSSS
+      WORDPRESS_DB_PASSWORD: YYYYYYYYYYY
+      WORDPRESS_DB_NAME: domain2Db
+    labels:
+      - traefik.backend=blogSwati
+      - traefik.frontend.rule=Host:www.domain2.com, domain2.com
+      - traefik.docker.network=web
+      - traefik.port=80
+      - traefik.frontend.headers.SSLRedirect:true
+      - traefik.frontend.headers.SSLForceHost:true
+      - traefik.frontend.headers.SSLHost:www.domain2.com
+      - traefik.frontend.redirect.regex:https://domain2.com([/](.*))*
+      - traefik.frontend.redirect.replacement:https://www.domain2.com$${1}
+    volumes:
+      - ./domain2/wordpress_files:/var/www/html
+    networks:
+      - internal
+      - web
+
+  dbDomain2:
+    image: mariadb:10.4.3
+    environment:
+      MYSQL_USER: SSSSSSSSSS
+      MYSQL_PASSWORD: YYYYYYYYYY
+      MYSQL_DATABASE: domain2Db
+#      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    networks:
+      - internal
+    labels:
+      - traefik.enable=false
+    volumes:
+      - ./domain2/datadir:/var/lib/mysql
+      
+  adminerDomain2:
+    image: adminer:4.6.3-standalone
+    labels:
+      - traefik.backend=adminerDomain2
+      - traefik.frontend.rule=Host:db-admin.domain2.com
+      - traefik.docker.network=web
+      - traefik.port=8080
+    networks:
+      - internal
+      - web
+    depends_on:
+      - dbDomain2
+      
+networks:
+  web:
+    external: true
+  internal:
+    external: false
