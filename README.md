@@ -25,8 +25,8 @@ Traefik configuration for multiple domians with redirection
        --/domain2/
        |   |
        |   -- docker-compose.yml
-       |   --/domain1/wordpress_files/
-       |   --/domain1/datadir/    
+       |   --/domain2/wordpress_files/
+       |   --/domain2/datadir/    
        |...
 ```
 
